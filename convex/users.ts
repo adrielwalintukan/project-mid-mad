@@ -38,7 +38,7 @@ export const registerUser = mutation({
     },
 });
 
-export const loginUser = query({
+export const loginUser = mutation({
     args: {
         email: v.string(),
         password: v.string(),
