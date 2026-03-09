@@ -4,14 +4,14 @@ import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 
 export default function EventsScreen() {
-    // Query upcoming events from Convex
-    const events = useQuery(api.events.getUpcomingEvents);
+    // Query all events from Convex
+    const events = useQuery(api.events.getEvents);
 
     if (events === undefined) {
         return (
             <View style={styles.centerContainer}>
                 <ActivityIndicator size="large" color="#0000ff" />
-                <Text style={styles.loadingText}>Loading upcoming events...</Text>
+                <Text style={styles.loadingText}>Loading events...</Text>
             </View>
         );
     }
@@ -39,15 +39,14 @@ export default function EventsScreen() {
             <Text style={styles.headerTitle}>Upcoming Events</Text>
 
             {events.length === 0 ? (
-                <View style={styles.centerContainer}>
-                    <Text>No upcoming events currently scheduled.</Text>
+                <View style={styles.emptyContainer}>
+                    <Text>No events currently scheduled.</Text>
                 </View>
             ) : (
                 <FlatList
                     data={events}
                     keyExtractor={(item) => item._id}
                     renderItem={renderItem}
-                    contentContainerStyle={styles.listContainer}
                 />
             )}
         </View>
@@ -57,22 +56,23 @@ export default function EventsScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#f5f5f5",
+        padding: 20,
+        backgroundColor: "#fff",
     },
     centerContainer: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
     },
+    emptyContainer: {
+        alignItems: "center",
+        marginTop: 40,
+    },
     headerTitle: {
         fontSize: 24,
         fontWeight: "bold",
-        margin: 16,
+        marginBottom: 20,
         textAlign: "center",
-    },
-    listContainer: {
-        paddingHorizontal: 16,
-        paddingBottom: 20,
     },
     eventItem: {
         backgroundColor: "#fff",

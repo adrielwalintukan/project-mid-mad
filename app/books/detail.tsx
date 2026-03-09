@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, ActivityIndicator, FlatList, ScrollView, Button } from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator, FlatList, SafeAreaView, Button } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
@@ -41,48 +41,55 @@ export default function BookDetailScreen() {
     );
 
     return (
-        <FlatList
-            style={styles.container}
-            contentContainerStyle={styles.listContainer}
-            data={reviews}
-            keyExtractor={(item) => item._id}
-            ListHeaderComponent={
-                <View>
-                    <View style={styles.header}>
-                        <Text style={styles.title}>{book.title}</Text>
-                        <Text style={styles.author}>Author: {book.author}</Text>
-                        <Text style={styles.faculty}>Faculty: {book.faculty}</Text>
+        <SafeAreaView style={styles.safeArea}>
+            <FlatList
+                style={styles.container}
+                contentContainerStyle={styles.listContainer}
+                data={reviews}
+                keyExtractor={(item) => item._id}
+                ListHeaderComponent={
+                    <View>
+                        <View style={styles.header}>
+                            <Text style={styles.title}>{book.title}</Text>
+                            <Text style={styles.author}>Author: {book.author}</Text>
+                            <Text style={styles.faculty}>Faculty: {book.faculty}</Text>
+                        </View>
+
+                        <Text style={styles.sectionTitle}>Description</Text>
+                        <Text style={styles.description}>
+                            {book.description || "No description provided."}
+                        </Text>
+
+                        <View style={styles.buttonContainer}>
+                            <Button
+                                title="Write Review"
+                                onPress={() => {
+                                    router.push({
+                                        pathname: "/books/review",
+                                        params: { bookId: book._id }
+                                    });
+                                }}
+                            />
+                        </View>
+
+                        <Text style={styles.sectionTitle}>Reviews</Text>
+                        {reviews.length === 0 && (
+                            <Text style={styles.noReviews}>No reviews yet. Be the first to review!</Text>
+                        )}
                     </View>
-
-                    <Text style={styles.sectionTitle}>Description</Text>
-                    <Text style={styles.description}>
-                        {book.description || "No description provided."}
-                    </Text>
-
-                    <View style={styles.buttonContainer}>
-                        <Button
-                            title="Write Review"
-                            onPress={() => {
-                                router.push({
-                                    pathname: "/books/review",
-                                    params: { bookId: book._id }
-                                });
-                            }}
-                        />
-                    </View>
-
-                    <Text style={styles.sectionTitle}>Reviews</Text>
-                    {reviews.length === 0 && (
-                        <Text style={styles.noReviews}>No reviews yet. Be the first to review!</Text>
-                    )}
-                </View>
-            }
-            renderItem={renderReviewItem}
-        />
+                }
+                renderItem={renderReviewItem}
+            />
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
+    safeArea: {
+        flex: 1,
+        padding: 20,
+        backgroundColor: "#fff",
+    },
     container: {
         flex: 1,
         backgroundColor: "#fff",

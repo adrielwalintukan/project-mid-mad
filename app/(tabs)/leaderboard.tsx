@@ -28,10 +28,10 @@ export default function LeaderboardScreen() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.headerTitle}>Top Readers</Text>
+            <Text style={styles.headerTitle}>Leaderboard</Text>
 
             {leaderboardUsers.length === 0 ? (
-                <View style={styles.centerContainer}>
+                <View style={styles.emptyContainer}>
                     <Text>No users available yet.</Text>
                 </View>
             ) : (
@@ -39,7 +39,6 @@ export default function LeaderboardScreen() {
                     data={leaderboardUsers}
                     keyExtractor={(item) => item._id}
                     renderItem={renderItem}
-                    contentContainerStyle={styles.listContainer}
                 />
             )}
         </View>
@@ -49,22 +48,23 @@ export default function LeaderboardScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#f5f5f5",
+        padding: 20,
+        backgroundColor: "#fff",
     },
     centerContainer: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
     },
+    emptyContainer: {
+        alignItems: "center",
+        marginTop: 40,
+    },
     headerTitle: {
         fontSize: 24,
         fontWeight: "bold",
-        margin: 16,
+        marginBottom: 20,
         textAlign: "center",
-    },
-    listContainer: {
-        paddingHorizontal: 16,
-        paddingBottom: 20,
     },
     userItem: {
         flexDirection: "row",
