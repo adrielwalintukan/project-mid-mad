@@ -15,6 +15,7 @@ import type * as notifications from "../notifications.js";
 import type * as points from "../points.js";
 import type * as reviews from "../reviews.js";
 import type * as users from "../users.js";
+import type * as visitCodes from "../visitCodes.js";
 import type * as visits from "../visits.js";
 
 import type {
@@ -31,6 +32,7 @@ declare const fullApi: ApiFromModules<{
   points: typeof points;
   reviews: typeof reviews;
   users: typeof users;
+  visitCodes: typeof visitCodes;
   visits: typeof visits;
 }>;
 

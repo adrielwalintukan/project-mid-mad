@@ -4,10 +4,11 @@ import { v } from "convex/values";
 export const registerUser = mutation({
     args: {
         name: v.string(),
-        nim: v.string(),
-        faculty: v.string(),
+        nim: v.optional(v.string()),
+        faculty: v.optional(v.string()),
         email: v.string(),
         password: v.string(),
+        role: v.optional(v.string()),
     },
     handler: async (ctx, args) => {
         // Basic check to see if email already exists
@@ -21,15 +22,14 @@ export const registerUser = mutation({
         }
 
         // TODO: Hash the password before saving in production
-        // e.g., using bcrypt or a similar library to encrypt args.password
         const userId = await ctx.db.insert("users", {
             name: args.name,
-            nim: args.nim,
-            faculty: args.faculty,
+            nim: args.nim ?? "",
+            faculty: args.faculty ?? "",
             email: args.email,
             password: args.password,
             points: 0,
-            role: "student",
+            role: args.role ?? "student",
             createdAt: Date.now(),
         });
 
@@ -42,6 +42,7 @@ export const loginUser = mutation({
     args: {
         email: v.string(),
         password: v.string(),
+        role: v.string(),
     },
     handler: async (ctx, args) => {
         const user = await ctx.db
@@ -56,6 +57,11 @@ export const loginUser = mutation({
         // TODO: Compare hashed passwords in production instead of plain text
         if (user.password !== args.password) {
             throw new Error("Incorrect password");
+        }
+
+        // Validate that the selected role matches the registered role
+        if (user.role !== args.role) {
+            throw new Error("Wrong role selected");
         }
 
         return user;
@@ -107,12 +113,12 @@ export const addPoints = mutation({
 
 export const getLeaderboard = query({
     handler: async (ctx) => {
-        // Fetch top 10 users sorted by points (descending)
-        // Convex queries are limited, so we fetch and sort them locally.
-        // In larger-scale apps, you'd use a dedicated points sum index or materialized views.
         const users = await ctx.db.query("users").collect();
 
-        users.sort((a, b) => b.points - a.points);
-        return users.slice(0, 10);
+        // Only show students on the leaderboard
+        const students = users.filter((u) => u.role === "student");
+
+        students.sort((a, b) => b.points - a.points);
+        return students.slice(0, 10);
     },
 });

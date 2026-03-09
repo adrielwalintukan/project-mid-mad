@@ -69,4 +69,9 @@ export default defineSchema({
         userId: v.id("users"),
         date: v.number(),
     }).index("by_userId", ["userId"]),
+
+    visitCodes: defineTable({
+        code: v.string(),
+        createdAt: v.number(),
+    }).index("by_code", ["code"]),
 });
