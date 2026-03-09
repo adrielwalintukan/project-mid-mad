@@ -1,9 +1,11 @@
 import React from "react";
-import { View, Text, FlatList, StyleSheet, ActivityIndicator } from "react-native";
+import { View, Text, FlatList, StyleSheet, ActivityIndicator, TouchableOpacity } from "react-native";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
+import { useRouter } from "expo-router";
 
 export default function BooksScreen() {
+    const router = useRouter();
     // Query all books from Convex
     const books = useQuery(api.books.getBooks);
 
@@ -19,11 +21,19 @@ export default function BooksScreen() {
 
     // Render an individual item for the FlatList
     const renderItem = ({ item }: { item: any }) => (
-        <View style={styles.bookItem}>
+        <TouchableOpacity
+            style={styles.bookItem}
+            onPress={() => {
+                router.push({
+                    pathname: "/books/detail",
+                    params: { bookId: item._id }
+                });
+            }}
+        >
             <Text style={styles.bookTitle}>{item.title}</Text>
             <Text style={styles.bookDetails}>Author: {item.author}</Text>
             <Text style={styles.bookDetails}>Faculty: {item.faculty}</Text>
-        </View>
+        </TouchableOpacity>
     );
 
     return (
@@ -31,7 +41,7 @@ export default function BooksScreen() {
             <Text style={styles.headerTitle}>Library Catalog</Text>
 
             {books.length === 0 ? (
-                <View style={styles.centerContainer}>
+                <View style={styles.emptyContainer}>
                     <Text>No books available.</Text>
                 </View>
             ) : (
@@ -39,7 +49,6 @@ export default function BooksScreen() {
                     data={books}
                     keyExtractor={(item) => item._id}
                     renderItem={renderItem}
-                    contentContainerStyle={styles.listContainer}
                 />
             )}
         </View>
@@ -49,22 +58,23 @@ export default function BooksScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#f5f5f5",
+        padding: 20,
+        backgroundColor: "#fff",
     },
     centerContainer: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
     },
+    emptyContainer: {
+        alignItems: "center",
+        marginTop: 40,
+    },
     headerTitle: {
         fontSize: 24,
         fontWeight: "bold",
-        margin: 16,
+        marginBottom: 20,
         textAlign: "center",
-    },
-    listContainer: {
-        paddingHorizontal: 16,
-        paddingBottom: 20,
     },
     bookItem: {
         backgroundColor: "#fff",
