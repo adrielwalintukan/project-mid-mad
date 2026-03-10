@@ -21,10 +21,12 @@ export default function PointsScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Points History</Text>
+      <Text style={styles.header}>Points History</Text>
 
       {points.length === 0 ? (
-        <Text style={styles.empty}>No point activity yet</Text>
+        <View style={styles.emptyContainer}>
+          <Text style={styles.empty}>No point activity yet</Text>
+        </View>
       ) : (
         <FlatList
           data={points}
@@ -49,21 +51,31 @@ export default function PointsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: "#fff",
+    padding: 24,
+    backgroundColor: "#EEF3FA",
   },
 
-  title: {
-    fontSize: 22,
-    fontWeight: "bold",
+  header: {
+    fontSize: 24,
+    fontWeight: "700",
     marginBottom: 20,
+    color: "#1F2937",
+    borderBottomWidth: 1,
+    borderBottomColor: "#E5E7EB",
+    paddingBottom: 10,
   },
 
   card: {
-    backgroundColor: "#f5f5f5",
-    padding: 15,
-    borderRadius: 8,
-    marginBottom: 10,
+    backgroundColor: "#FFFFFF",
+    padding: 16,
+    borderRadius: 16,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: "#E3E8F0",
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowRadius: 6,
+    elevation: 2,
   },
 
   activity: {
@@ -83,9 +95,15 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
 
+  emptyContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 40,
+  },
+
   empty: {
     textAlign: "center",
-    marginTop: 40,
     color: "#888",
   },
 

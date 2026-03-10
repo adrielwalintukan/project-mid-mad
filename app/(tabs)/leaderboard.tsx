@@ -1,6 +1,6 @@
-import React from "react";
-import { View, Text, FlatList, StyleSheet, ActivityIndicator } from "react-native";
 import { useQuery } from "convex/react";
+import React from "react";
+import { ActivityIndicator, FlatList, StyleSheet, Text, View } from "react-native";
 import { api } from "../../convex/_generated/api";
 
 export default function LeaderboardScreen() {
@@ -28,11 +28,11 @@ export default function LeaderboardScreen() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.headerTitle}>Leaderboard</Text>
+            <Text style={styles.header}>Leaderboard</Text>
 
             {leaderboardUsers.length === 0 ? (
                 <View style={styles.emptyContainer}>
-                    <Text>No users available yet.</Text>
+                    <Text style={styles.emptyText}>No users available yet.</Text>
                 </View>
             ) : (
                 <FlatList
@@ -48,8 +48,8 @@ export default function LeaderboardScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
-        backgroundColor: "#fff",
+        padding: 24,
+        backgroundColor: "#EEF3FA",
     },
     centerContainer: {
         flex: 1,
@@ -60,25 +60,31 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginTop: 40,
     },
-    headerTitle: {
-        fontSize: 24,
-        fontWeight: "bold",
-        marginBottom: 20,
+    emptyText: {
+        color: "#888",
+    },
+    header: {
+        fontSize: 26,
+        fontWeight: "700",
+        marginBottom: 16,
+        color: "#1F2937",
+        borderBottomWidth: 1,
+        borderBottomColor: "#E5E7EB",
+        paddingBottom: 10,
         textAlign: "center",
     },
     userItem: {
         flexDirection: "row",
         alignItems: "center",
-        backgroundColor: "#fff",
+        backgroundColor: "#FFFFFF",
         padding: 16,
-        borderRadius: 8,
+        borderRadius: 16,
         marginBottom: 12,
         borderWidth: 1,
-        borderColor: "#e0e0e0",
+        borderColor: "#E3E8F0",
         shadowColor: "#000",
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.1,
-        shadowRadius: 2,
+        shadowOpacity: 0.05,
+        shadowRadius: 6,
         elevation: 2,
     },
     rank: {

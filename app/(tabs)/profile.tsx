@@ -1,6 +1,7 @@
+import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
-import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useAuth } from "../../context/AuthContext";
 
 export default function ProfileScreen() {
@@ -22,8 +23,8 @@ export default function ProfileScreen() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.headerTitle}>My Profile</Text>
 
+                
             <View style={styles.profileCard}>
                 <View style={styles.detailRow}>
                     <Text style={styles.label}>Name</Text>
@@ -61,20 +62,29 @@ export default function ProfileScreen() {
                 style={styles.menuButton}
                 onPress={() => router.push("/profile/points")}
             >
-                <Text style={styles.menuText}>Points History</Text>
+                <View style={styles.menuRow}>
+                    <Text style={styles.menuText}>Points History</Text>
+                    <Ionicons name="chevron-forward" size={20} color="#4B5563" />
+                </View>
             </TouchableOpacity>
 
             <TouchableOpacity
                 style={styles.menuButton}
                 onPress={() => router.push("/profile/visits")}
             >
-                <Text style={styles.menuText}>Visit History</Text>
+                <View style={styles.menuRow}>
+                    <Text style={styles.menuText}>Visit History</Text>
+                    <Ionicons name="chevron-forward" size={20} color="#4B5563" />
+                </View>
             </TouchableOpacity>
 
 
-            <View style={styles.buttonContainer}>
-                <Button title="Logout" color="#d9534f" onPress={handleLogout} />
-            </View>
+            <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+                <View style={styles.logoutRow}>
+                    <Ionicons name="log-out-outline" size={20} color="#FFFFFF" />
+                    <Text style={styles.logoutButtonText}>Logout</Text>
+                </View>
+            </TouchableOpacity>
         </View>
     );
 }
@@ -82,30 +92,26 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
-        backgroundColor: "#fff",
+        padding: 24,
+        backgroundColor: "#EEF3FA",
     },
     centerContainer: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: "#EEF3FA",
+        padding: 24,
     },
-    headerTitle: {
-        fontSize: 24,
-        fontWeight: "bold",
-        marginBottom: 20,
-        textAlign: "center",
-    },
+
     profileCard: {
-        backgroundColor: "#fff",
-        padding: 16,
-        borderRadius: 8,
+        backgroundColor: "#FFFFFF",
+        padding: 18,
+        borderRadius: 16,
         borderWidth: 1,
-        borderColor: "#e0e0e0",
+        borderColor: "#E3E8F0",
         shadowColor: "#000",
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.1,
-        shadowRadius: 2,
+        shadowOpacity: 0.05,
+        shadowRadius: 6,
         elevation: 2,
         marginBottom: 20,
     },
@@ -138,22 +144,52 @@ const styles = StyleSheet.create({
     /* MENU STYLE */
 
     menuButton: {
-        backgroundColor: "#f5f5f5",
+        backgroundColor: "#F7F9FC",
         padding: 15,
-        borderRadius: 8,
-        marginBottom: 10,
+        borderRadius: 14,
+        marginBottom: 12,
         borderWidth: 1,
-        borderColor: "#e0e0e0",
+        borderColor: "#E5E7EB",
     },
 
     menuText: {
         fontSize: 16,
         fontWeight: "500",
+        color: "#4B5563",
     },
 
-    buttonContainer: {
-        marginTop: "auto",
+    menuRow: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        width: "100%",
+    },
+
+    logoutButton: {
+        backgroundColor: "#EF4444",
+        paddingVertical: 16,
+        borderRadius: 16,
+        alignItems: "center",
+        shadowColor: "#EF4444",
+        shadowOpacity: 0.25,
+        shadowRadius: 6,
+        elevation: 4,
+        marginTop: 20,
         marginBottom: 20,
+    },
+
+    logoutRow: {
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 10,
+    },
+
+    logoutButtonText: {
+        color: "#FFFFFF",
+        fontSize: 17,
+        fontWeight: "700",
+        letterSpacing: 0.5,
     },
 
     loadingText: {

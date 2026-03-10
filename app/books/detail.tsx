@@ -1,6 +1,6 @@
 import { useQuery } from "convex/react";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { ActivityIndicator, Button, FlatList, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, FlatList, Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
 
@@ -51,8 +51,10 @@ export default function BookDetailScreen() {
                 keyExtractor={(item) => item._id}
                 ListHeaderComponent={
                     <View>
-                        <View style={styles.header}>
-                            <Text style={styles.title}>{book.title}</Text>
+                        <Text style={styles.headerTitle}>Book Details</Text>
+
+                        <View style={styles.headerCard}>
+                            <Text style={styles.bookTitle}>{book.title}</Text>
                             <Text style={styles.author}>Author: {book.author}</Text>
                             <Text style={styles.faculty}>Faculty: {book.faculty}</Text>
                         </View>
@@ -62,17 +64,20 @@ export default function BookDetailScreen() {
                             {book.description || "No description provided."}
                         </Text>
 
-                        <View style={styles.buttonContainer}>
-                            <Button
-                                title="Write Review"
-                                onPress={() => {
-                                    router.push({
-                                        pathname: "/books/review",
-                                        params: { bookId: book._id }
-                                    });
-                                }}
-                            />
-                        </View>
+                        <Pressable
+                            style={({ pressed }) => [
+                                styles.submitButton,
+                                pressed && styles.submitButtonPressed,
+                            ]}
+                            onPress={() => {
+                                router.push({
+                                    pathname: "/books/review",
+                                    params: { bookId: book._id }
+                                });
+                            }}
+                        >
+                            <Text style={styles.submitButtonText}>Write Review</Text>
+                        </Pressable>
 
                         <Text style={styles.sectionTitle}>Reviews</Text>
                         {reviews.length === 0 && (
@@ -89,15 +94,15 @@ export default function BookDetailScreen() {
 const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
-        padding: 20,
-        backgroundColor: "#fff",
+        padding: 24,
+        backgroundColor: "#EEF3FA",
     },
     container: {
         flex: 1,
-        backgroundColor: "#fff",
+        backgroundColor: "transparent",
     },
     listContainer: {
-        padding: 16,
+        padding: 0,
         paddingBottom: 40,
     },
     centerContainer: {
@@ -105,17 +110,33 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-    header: {
+    headerCard: {
+        backgroundColor: "#FFFFFF",
+        padding: 16,
+        borderRadius: 16,
+        borderWidth: 1,
+        borderColor: "#E3E8F0",
+        shadowColor: "#000",
+        shadowOpacity: 0.05,
+        shadowRadius: 6,
+        elevation: 2,
         marginBottom: 20,
-        paddingBottom: 16,
-        borderBottomWidth: 1,
-        borderBottomColor: "#eee",
     },
-    title: {
+    headerTitle: {
         fontSize: 26,
-        fontWeight: "bold",
+        fontWeight: "700",
+        marginBottom: 16,
+        color: "#1F2937",
+        borderBottomWidth: 1,
+        borderBottomColor: "#E5E7EB",
+        paddingBottom: 10,
+        textAlign: "center",
+    },
+    bookTitle: {
+        fontSize: 24,
+        fontWeight: "700",
         marginBottom: 8,
-        color: "#333",
+        color: "#1F2937",
     },
     author: {
         fontSize: 16,
@@ -130,10 +151,10 @@ const styles = StyleSheet.create({
     },
     sectionTitle: {
         fontSize: 20,
-        fontWeight: "bold",
+        fontWeight: "700",
         marginTop: 10,
         marginBottom: 8,
-        color: "#333",
+        color: "#1F2937",
     },
     description: {
         fontSize: 15,
@@ -143,11 +164,11 @@ const styles = StyleSheet.create({
     },
     reviewItem: {
         padding: 14,
-        backgroundColor: "#f9f9f9",
-        borderRadius: 8,
+        backgroundColor: "#FFFFFF",
+        borderRadius: 16,
         marginBottom: 12,
         borderWidth: 1,
-        borderColor: "#e0e0e0",
+        borderColor: "#E3E8F0",
     },
     reviewRating: {
         fontWeight: "bold",
@@ -160,8 +181,20 @@ const styles = StyleSheet.create({
         color: "#333",
         lineHeight: 20,
     },
-    buttonContainer: {
+    submitButton: {
         marginBottom: 20,
+        backgroundColor: "#0066cc",
+        paddingVertical: 14,
+        borderRadius: 12,
+        alignItems: "center",
+    },
+    submitButtonPressed: {
+        backgroundColor: "#004f99",
+    },
+    submitButtonText: {
+        color: "#fff",
+        fontWeight: "700",
+        fontSize: 16,
     },
     loadingText: {
         marginTop: 10,

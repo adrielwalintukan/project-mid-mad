@@ -1,55 +1,26 @@
-import { Tabs } from "expo-router";
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
 
-export default function TabsLayout() {
+export default function NotificationsScreen() {
   return (
-    <Tabs
-      screenOptions={{
-        headerShown: true
-      }}
-    >
-      <Tabs.Screen
-        name="home"
-        options={{
-          title: "Home",
-        }}
-      />
-
-      <Tabs.Screen
-        name="books"
-        options={{
-          title: "Books",
-        }}
-      />
-
-      <Tabs.Screen
-        name="events"
-        options={{
-          title: "Events",
-        }}
-      />
-
-      <Tabs.Screen
-        name="leaderboard"
-        options={{
-          title: "Leaderboard",
-        }}
-      />
-
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: "Profile",
-        }}
-      />
-
-      {/* Notifications screen */}
-      <Tabs.Screen
-        name="notifications"
-        options={{
-          title: "Notifications",
-          tabBarButton: () => null
-        }}
-      />
-    </Tabs>
+    <View style={styles.container}>
+      <Text style={styles.title}>No notifications received yet</Text>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#EEF3FA",
+    padding: 24,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#888",
+    textAlign: "center",
+  },
+});

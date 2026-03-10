@@ -22,12 +22,12 @@ export default function VisitHistoryScreen() {
 
   return (
     <View style={styles.container}>
-
-      {/* HEADER */}
       <Text style={styles.header}>Visit History</Text>
 
       {visits.length === 0 ? (
-        <Text style={styles.empty}>No visit history yet.</Text>
+        <View style={styles.emptyContainer}>
+          <Text style={styles.empty}>No visit history yet.</Text>
+        </View>
       ) : (
         <FlatList
           data={visits}
@@ -48,39 +48,54 @@ export default function VisitHistoryScreen() {
 
 const styles = StyleSheet.create({
 
-container:{
-flex:1,
-backgroundColor:"#fff",
-padding:20
+container: {
+  flex: 1,
+  backgroundColor: "#EEF3FA",
+  padding: 24,
 },
 
-header:{
-fontSize:24,
-fontWeight:"bold",
-marginBottom:20
+header: {
+    fontSize: 24,
+    fontWeight: "700",
+    marginBottom: 20,
+  borderBottomWidth: 1,
+  borderBottomColor: "#E5E7EB",
+  paddingBottom: 10,
 },
 
-card:{
-backgroundColor:"#f5f5f5",
-padding:15,
-borderRadius:10,
-marginBottom:10
+card: {
+  backgroundColor: "#FFFFFF",
+  padding: 16,
+  borderRadius: 16,
+  marginBottom: 12,
+  borderWidth: 1,
+  borderColor: "#E3E8F0",
+  shadowColor: "#000",
+  shadowOpacity: 0.05,
+  shadowRadius: 6,
+  elevation: 2,
 },
 
-date:{
-fontSize:16
+date: {
+  fontSize: 16,
+  color: "#333",
 },
 
-empty:{
-textAlign:"center",
-marginTop:30,
-color:"#666"
+emptyContainer: {
+  flex: 1,
+  justifyContent: "center",
+  alignItems: "center",
+  marginTop: 40,
 },
 
-center:{
-flex:1,
-justifyContent:"center",
-alignItems:"center"
-}
+empty: {
+  textAlign: "center",
+  color: "#888",
+},
 
+center: {
+  flex: 1,
+  justifyContent: "center",
+  alignItems: "center",
+},
 });

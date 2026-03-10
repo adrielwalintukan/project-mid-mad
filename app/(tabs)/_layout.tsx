@@ -59,28 +59,51 @@ export default function TabsLayout() {
         name="home"
         options={{
           title: "Home",
-          headerRight: () => <NotificationIcon />
+          headerRight: () => <NotificationIcon />,
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="home" size={size} color={color} />
+          ),
         }}
       />
 
       <Tabs.Screen
         name="books"
-        options={{ title: "Books" }}
+        options={{ 
+          title: "Books",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="book" size={size} color={color} />
+          ),
+        }}
       />
 
       <Tabs.Screen
         name="events"
-        options={{ title: "Events" }}
+        options={{ 
+          title: "Events",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="calendar" size={size} color={color} />
+          ),
+        }}
       />
 
       <Tabs.Screen
         name="leaderboard"
-        options={{ title: "Leaderboard" }}
+        options={{ 
+          title: "Leaderboard",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="trophy" size={size} color={color} />
+          ),
+        }}
       />
 
       <Tabs.Screen
         name="profile"
-        options={{ title: "Profile" }}
+        options={{ 
+          title: "Profile",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person" size={size} color={color} />
+          ),
+        }}
       />
 
       {/* Hidden from tabs */}

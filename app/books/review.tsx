@@ -1,7 +1,7 @@
 import { useMutation } from "convex/react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
-import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { Alert, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { useAuth } from "../../context/AuthContext";
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
@@ -70,31 +70,43 @@ export default function ReviewScreen() {
         <View style={styles.container}>
             <Text style={styles.title}>Write a Review</Text>
 
-            <Text style={styles.label}>Rating (1-5)</Text>
-            <TextInput
-                style={styles.input}
-                placeholder="e.g. 5"
-                value={rating}
-                onChangeText={setRating}
-                keyboardType="numeric"
-                maxLength={1}
-            />
+            <View style={styles.card}>
+                <Text style={styles.label}>Rating (1-5)</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder="e.g. 5"
+                    placeholderTextColor="#999"
+                    value={rating}
+                    onChangeText={setRating}
+                    keyboardType="numeric"
+                    maxLength={1}
+                />
 
-            <Text style={styles.label}>Comment</Text>
-            <TextInput
-                style={[styles.input, styles.textArea]}
-                placeholder="What did you think about this book?"
-                value={comment}
-                onChangeText={setComment}
-                multiline
-                numberOfLines={4}
-            />
+                <Text style={styles.label}>Comment</Text>
+                <TextInput
+                    style={[styles.input, styles.textArea]}
+                    placeholder="What did you think about this book?"
+                    placeholderTextColor="#999"
+                    value={comment}
+                    onChangeText={setComment}
+                    multiline
+                    numberOfLines={4}
+                />
 
-            <Button
-                title={isSubmitting ? "Submitting..." : "Submit Review"}
-                onPress={handleSubmit}
-                disabled={isSubmitting}
-            />
+                <Pressable
+                    style={({ pressed }) => [
+                        styles.submitButton,
+                        pressed && styles.submitButtonPressed,
+                        isSubmitting && styles.submitButtonDisabled,
+                    ]}
+                    onPress={handleSubmit}
+                    disabled={isSubmitting}
+                >
+                    <Text style={styles.submitButtonText}>
+                        {isSubmitting ? "Submitting..." : "Submit Review"}
+                    </Text>
+                </Pressable>
+            </View>
         </View>
     );
 }
@@ -102,14 +114,29 @@ export default function ReviewScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
-        backgroundColor: "#fff",
+        padding: 24,
+        backgroundColor: "#EEF3FA",
     },
     title: {
-        fontSize: 24,
-        fontWeight: "bold",
-        marginBottom: 20,
-        color: "#333",
+        fontSize: 26,
+        fontWeight: "700",
+        marginBottom: 16,
+        color: "#1F2937",
+        borderBottomWidth: 1,
+        borderBottomColor: "#E5E7EB",
+        paddingBottom: 10,
+        textAlign: "center",
+    },
+    card: {
+        backgroundColor: "#FFFFFF",
+        padding: 16,
+        borderRadius: 16,
+        borderWidth: 1,
+        borderColor: "#E3E8F0",
+        shadowColor: "#000",
+        shadowOpacity: 0.05,
+        shadowRadius: 6,
+        elevation: 2,
     },
     label: {
         fontSize: 16,
@@ -119,15 +146,34 @@ const styles = StyleSheet.create({
     },
     input: {
         borderWidth: 1,
-        borderColor: "#ccc",
-        borderRadius: 8,
+        borderColor: "#E3E8F0",
+        borderRadius: 12,
         padding: 12,
         marginBottom: 20,
         fontSize: 16,
-        backgroundColor: "#fafafa",
+        backgroundColor: "#F5F7FB",
+        color: "#222",
     },
     textArea: {
-        height: 100,
+        height: 120,
         textAlignVertical: "top",
+    },
+    submitButton: {
+        marginTop: 8,
+        backgroundColor: "#0066cc",
+        paddingVertical: 14,
+        borderRadius: 12,
+        alignItems: "center",
+    },
+    submitButtonPressed: {
+        backgroundColor: "#004f99",
+    },
+    submitButtonDisabled: {
+        backgroundColor: "#a0bfff",
+    },
+    submitButtonText: {
+        color: "#fff",
+        fontWeight: "700",
+        fontSize: 16,
     },
 });

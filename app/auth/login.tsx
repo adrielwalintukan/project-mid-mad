@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from "react-native";
 import { useMutation } from "convex/react";
-import { api } from "../../convex/_generated/api";
 import { useRouter } from "expo-router";
+import React, { useState } from "react";
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useAuth } from "../../context/AuthContext";
+import { api } from "../../convex/_generated/api";
 
 export default function LoginScreen() {
     const router = useRouter();
@@ -79,15 +79,15 @@ export default function LoginScreen() {
                 </TouchableOpacity>
             </View>
 
-            <Button title="Login" onPress={handleLogin} />
-
+            <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+                <Text style={styles.loginButtonText}>Login</Text>
+            </TouchableOpacity>
+            
             <View style={{ height: 15 }} />
 
-            <Button
-                title="Go to register"
-                onPress={() => router.push("/auth/register")}
-                color="#888"
-            />
+            <TouchableOpacity onPress={() => router.push("/auth/register")}> 
+                <Text style={styles.linkText}>Dont have an account? Register</Text>
+            </TouchableOpacity>
         </View>
     );
 }
@@ -95,60 +95,104 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
+        padding: 24,
         justifyContent: "center",
-        backgroundColor: "#fff",
+        backgroundColor: "#EEF3FA",
     },
+
     title: {
-        fontSize: 28,
-        fontWeight: "bold",
+        fontSize: 30,
+        fontWeight: "800",
         marginBottom: 30,
         textAlign: "center",
+        color: "#2C6EBA",
+        letterSpacing: 1,
     },
+
     input: {
+        backgroundColor: "#ffffff",
         borderWidth: 1,
-        borderColor: "#ccc",
-        padding: 12,
-        marginBottom: 15,
-        borderRadius: 8,
+        borderColor: "#E3E8F0",
+        padding: 16,
+        marginBottom: 18,
+        borderRadius: 16,
         fontSize: 16,
+        shadowColor: "#000",
+        shadowOpacity: 0.05,
+        shadowRadius: 5,
+        elevation: 2,
     },
+
     error: {
-        color: "red",
-        marginBottom: 15,
+        backgroundColor: "#FFEAEA",
+        color: "#C62828",
+        marginBottom: 18,
+        padding: 12,
+        borderRadius: 12,
         textAlign: "center",
+        fontWeight: "500",
     },
+
     roleLabel: {
         fontSize: 14,
         fontWeight: "600",
-        color: "#444",
+        color: "#6B7280",
         marginBottom: 10,
     },
+
     roleContainer: {
         flexDirection: "row",
-        gap: 10,
-        marginBottom: 20,
+        gap: 12,
+        marginBottom: 22,
     },
+
     roleButton: {
         flex: 1,
-        paddingVertical: 12,
-        borderRadius: 8,
+        paddingVertical: 14,
+        borderRadius: 14,
         borderWidth: 1,
-        borderColor: "#ccc",
+        borderColor: "#E5E7EB",
         alignItems: "center",
-        backgroundColor: "#f5f5f5",
+        backgroundColor: "#F5F5F5",
     },
+
     roleButtonActive: {
-        backgroundColor: "#0066cc",
-        borderColor: "#0066cc",
+        backgroundColor: "#E5E7EB",
+        borderColor: "#D1D5DB",
     },
+
     roleButtonText: {
         fontSize: 15,
-        color: "#555",
+        color: "#4B5563",
         fontWeight: "500",
     },
+
     roleButtonTextActive: {
-        color: "#fff",
-        fontWeight: "bold",
+        color: "#1F2937",
+        fontWeight: "700",
+    },
+    linkText: {
+        textAlign: "center",
+        color: "#4b6cb7",
+        textDecorationLine: "underline",
+        fontSize: 15,
+        marginTop: 14,
+    },
+    loginButton: {
+    backgroundColor: "#2C6EBA",
+    paddingVertical: 16,
+    borderRadius: 16,
+    alignItems: "center",
+    shadowColor: "#2C6EBA",
+    shadowOpacity: 0.35,
+    shadowRadius: 6,
+    elevation: 4,
+    marginTop: 6,
+    },
+    loginButtonText: {
+    color: "#FFFFFF",
+    fontSize: 17,
+    fontWeight: "700",
+    letterSpacing: 0.5,
     },
 });

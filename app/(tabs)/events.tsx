@@ -40,7 +40,7 @@ export default function EventsScreen() {
 
             {events.length === 0 ? (
                 <View style={styles.emptyContainer}>
-                    <Text>No events currently scheduled.</Text>
+                    <Text style={styles.emptyText}>No events currently scheduled.</Text>
                 </View>
             ) : (
                 <FlatList
@@ -56,8 +56,8 @@ export default function EventsScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
-        backgroundColor: "#fff",
+        padding: 24,
+        backgroundColor: "#EEF3FA",
     },
     centerContainer: {
         flex: 1,
@@ -65,26 +65,33 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     emptyContainer: {
+        flex: 1,
+        justifyContent: "center",
         alignItems: "center",
-        marginTop: 40,
+    },
+    emptyText: {
+        color: "#888",
     },
     headerTitle: {
-        fontSize: 24,
-        fontWeight: "bold",
-        marginBottom: 20,
+        fontSize: 26,
+        fontWeight: "700",
+        marginBottom: 16,
+        color: "#1F2937",
+        borderBottomWidth: 1,
+        borderBottomColor: "#E5E7EB",
+        paddingBottom: 10,
         textAlign: "center",
     },
     eventItem: {
-        backgroundColor: "#fff",
+        backgroundColor: "#FFFFFF",
         padding: 16,
-        borderRadius: 8,
+        borderRadius: 16,
         marginBottom: 12,
         borderWidth: 1,
-        borderColor: "#e0e0e0",
+        borderColor: "#E3E8F0",
         shadowColor: "#000",
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.1,
-        shadowRadius: 2,
+        shadowOpacity: 0.05,
+        shadowRadius: 6,
         elevation: 2,
     },
     eventTitle: {

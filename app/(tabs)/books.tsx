@@ -24,6 +24,7 @@ export default function BooksScreen() {
     const renderItem = ({ item }: { item: any }) => (
         <TouchableOpacity
             style={styles.bookItem}
+            activeOpacity={0.7}
             onPress={() => {
                 router.push({
                     pathname: "/books/detail",
@@ -31,9 +32,13 @@ export default function BooksScreen() {
                 });
             }}
         >
-            <Text style={styles.bookTitle}>{item.title}</Text>
-            <Text style={styles.bookDetails}>Author: {item.author}</Text>
-            <Text style={styles.bookDetails}>Faculty: {item.faculty}</Text>
+            <View style={styles.bookRow}>
+                <View style={styles.bookMeta}>
+                    <Text style={styles.bookTitle}>{item.title}</Text>
+                    <Text style={styles.bookDetails}>Author: {item.author}</Text>
+                    <Text style={styles.bookDetails}>Faculty: {item.faculty}</Text>
+                </View>
+            </View>
         </TouchableOpacity>
     );
 
@@ -43,13 +48,14 @@ export default function BooksScreen() {
 
             {books.length === 0 ? (
                 <View style={styles.emptyContainer}>
-                    <Text>No books available.</Text>
+                    <Text style={styles.emptyText}>No books available.</Text>
                 </View>
             ) : (
                 <FlatList
                     data={books}
                     keyExtractor={(item) => item._id}
                     renderItem={renderItem}
+                    contentContainerStyle={styles.listContainer}
                 />
             )}
         </View>
@@ -59,8 +65,8 @@ export default function BooksScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
-        backgroundColor: "#fff",
+        padding: 24,
+        backgroundColor: "#EEF3FA",
     },
     centerContainer: {
         flex: 1,
@@ -68,27 +74,47 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     emptyContainer: {
+        flex: 1,
+        justifyContent: "center",
         alignItems: "center",
-        marginTop: 40,
+    },
+    emptyText: {
+        color: "#888",
     },
     headerTitle: {
-        fontSize: 24,
-        fontWeight: "bold",
-        marginBottom: 20,
+        fontSize: 26,
+        fontWeight: "700",
+        marginBottom: 16,
+        color: "#1F2937",
+        borderBottomWidth: 1,
+        borderBottomColor: "#E5E7EB",
+        paddingBottom: 10,
         textAlign: "center",
     },
+    listContainer: {
+        paddingTop: 12,
+        paddingBottom: 20,
+    },
     bookItem: {
-        backgroundColor: "#fff",
+        backgroundColor: "#FFFFFF",
         padding: 16,
-        borderRadius: 8,
+        borderRadius: 16,
         marginBottom: 12,
         borderWidth: 1,
-        borderColor: "#e0e0e0",
+        borderColor: "#E3E8F0",
         shadowColor: "#000",
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.1,
-        shadowRadius: 2,
+        shadowOpacity: 0.05,
+        shadowRadius: 6,
         elevation: 2,
+    },
+    bookRow: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+    },
+    bookMeta: {
+        flex: 1,
+        marginRight: 12,
     },
     bookTitle: {
         fontSize: 18,
@@ -105,5 +131,4 @@ const styles = StyleSheet.create({
         marginTop: 10,
         color: "#666",
     }
-    
 });

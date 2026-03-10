@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
 import { useMutation } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import React, { useState } from "react";
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useAuth } from "../../context/AuthContext";
+import { api } from "../../convex/_generated/api";
 
 export default function SetCodeScreen() {
     const { user } = useAuth();
@@ -51,11 +51,15 @@ export default function SetCodeScreen() {
                 autoCapitalize="characters"
             />
 
-            <Button
-                title={isSaving ? "Saving..." : "Save Code"}
+            <TouchableOpacity
+                style={[styles.submitButton, isSaving && styles.submitButtonDisabled]}
                 onPress={handleSave}
                 disabled={isSaving || code.trim() === ""}
-            />
+            >
+                <Text style={styles.submitButtonText}>
+                    {isSaving ? "Saving..." : "Save Code"}
+                </Text>
+            </TouchableOpacity>
         </View>
     );
 }
@@ -63,14 +67,15 @@ export default function SetCodeScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
-        backgroundColor: "#fff",
+        padding: 24,
+        backgroundColor: "#EEF3FA",
     },
     title: {
-        fontSize: 24,
-        fontWeight: "bold",
+        fontSize: 26,
+        fontWeight: "700",
         marginBottom: 10,
         textAlign: "center",
+        color: "#1F2937",
     },
     subtitle: {
         fontSize: 14,
@@ -80,18 +85,39 @@ const styles = StyleSheet.create({
     },
     input: {
         borderWidth: 1,
-        borderColor: "#ccc",
-        borderRadius: 8,
-        padding: 12,
+        borderColor: "#E3E8F0",
+        borderRadius: 12,
+        padding: 14,
         marginBottom: 20,
         fontSize: 16,
-        backgroundColor: "#fafafa",
+        backgroundColor: "#F7F9FC",
         textAlign: "center",
     },
     unauthorized: {
         fontSize: 18,
-        color: "red",
+        color: "#EF4444",
         textAlign: "center",
         marginTop: 40,
+        fontWeight: "600",
+    },
+    submitButton: {
+        backgroundColor: "#0066cc",
+        paddingVertical: 16,
+        borderRadius: 16,
+        alignItems: "center",
+        shadowColor: "#0066cc",
+        shadowOpacity: 0.25,
+        shadowRadius: 6,
+        elevation: 4,
+    },
+    submitButtonDisabled: {
+        backgroundColor: "#9CA3AF",
+        shadowOpacity: 0.1,
+    },
+    submitButtonText: {
+        color: "#FFFFFF",
+        fontSize: 17,
+        fontWeight: "700",
+        letterSpacing: 0.5,
     },
 });

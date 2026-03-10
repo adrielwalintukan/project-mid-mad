@@ -2,14 +2,13 @@ import { useMutation, useQuery } from "convex/react";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
-    Alert,
-    Button,
-    FlatList,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Alert,
+  FlatList,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from "react-native";
 
 import { useAuth } from "../../context/AuthContext";
@@ -144,15 +143,19 @@ export default function HomeScreen() {
               autoCapitalize="characters"
             />
 
-            <Button
-              title={isSubmitting ? "Submitting..." : "Visit Library"}
+            <TouchableOpacity
+              style={[styles.submitButton, isSubmitting && styles.submitButtonDisabled]}
               onPress={handleVisit}
               disabled={isSubmitting || visitCode.trim() === ""}
-            />
+            >
+              <Text style={styles.submitButtonText}>
+                {isSubmitting ? "Submitting..." : "Visit Library"}
+              </Text>
+            </TouchableOpacity>
           </View>
 
           {/* RECOMMENDED BOOKS */}
-          <Text style={styles.sectionTitle}>Recommended Books</Text>
+          <Text style={styles.sectionTitle}>Recommended Books</Text> 
         </View>
       }
       contentContainerStyle={styles.container}
@@ -162,33 +165,42 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
-    backgroundColor: "#fff",
+    padding: 24,
+    backgroundColor: "#EEF3FA",
   },
 
   centerContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#EEF3FA",
   },
 
   welcome: {
-    fontSize: 24,
-    fontWeight: "bold",
+    fontSize: 26,
+    fontWeight: "700",
     marginBottom: 5,
+    color: "#1F2937",
   },
 
   points: {
     fontSize: 18,
-    color: "#666",
+    color: "#0066cc",
     marginBottom: 25,
+    fontWeight: "600",
   },
 
   visitContainer: {
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#FFFFFF",
     padding: 20,
-    borderRadius: 12,
+    borderRadius: 16,
     marginBottom: 30,
+    borderWidth: 1,
+    borderColor: "#E3E8F0",
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowRadius: 6,
+    elevation: 2,
   },
 
   visitTitle: {
@@ -196,6 +208,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 8,
     textAlign: "center",
+    color: "#1F2937",
   },
 
   visitLabel: {
@@ -207,30 +220,35 @@ const styles = StyleSheet.create({
 
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    padding: 12,
+    borderColor: "#E3E8F0",
+    borderRadius: 12,
+    padding: 14,
     marginBottom: 20,
     textAlign: "center",
+    backgroundColor: "#F7F9FC",
+    fontSize: 16,
   },
 
   sectionTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 15,
+    fontSize: 22,
+    fontWeight: "700",
+    marginBottom: 16,
+    color: "#1F2937",
+    borderBottomWidth: 1,
+    borderBottomColor: "#E5E7EB",
+    paddingBottom: 10,
   },
 
   bookItem: {
-    backgroundColor: "#fff",
+    backgroundColor: "#FFFFFF",
     padding: 16,
-    borderRadius: 8,
+    borderRadius: 16,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: "#e0e0e0",
+    borderColor: "#E3E8F0",
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
+    shadowOpacity: 0.05,
+    shadowRadius: 6,
     elevation: 2,
   },
 
@@ -245,5 +263,28 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#666",
     marginTop: 2,
+  },
+
+  submitButton: {
+    backgroundColor: "#0066cc",
+    paddingVertical: 16,
+    borderRadius: 16,
+    alignItems: "center",
+    shadowColor: "#0066cc",
+    shadowOpacity: 0.25,
+    shadowRadius: 6,
+    elevation: 4,
+  },
+
+  submitButtonDisabled: {
+    backgroundColor: "#9CA3AF",
+    shadowOpacity: 0.1,
+  },
+
+  submitButtonText: {
+    color: "#FFFFFF",
+    fontSize: 17,
+    fontWeight: "700",
+    letterSpacing: 0.5,
   },
 });
