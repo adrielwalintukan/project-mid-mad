@@ -1,7 +1,6 @@
-import React from "react";
-import { View, Text, StyleSheet, ActivityIndicator, FlatList, SafeAreaView, Button } from "react-native";
-import { useLocalSearchParams, useRouter } from "expo-router";
 import { useQuery } from "convex/react";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { ActivityIndicator, Button, FlatList, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
 
@@ -37,6 +36,9 @@ export default function BookDetailScreen() {
         <View style={styles.reviewItem}>
             <Text style={styles.reviewRating}>⭐ {item.rating}/5</Text>
             <Text style={styles.reviewComment}>{item.comment}</Text>
+            <Text style={{ fontSize: 12, color: "#777", marginTop: 5 }}>
+                {new Date(item.createdAt).toLocaleDateString()}
+            </Text>
         </View>
     );
 

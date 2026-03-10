@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
-import { useLocalSearchParams, useRouter } from "expo-router";
 import { useMutation } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { useState } from "react";
+import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { useAuth } from "../../context/AuthContext";
+import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
 
 export default function ReviewScreen() {
     const router = useRouter();
-    const { bookId } = useLocalSearchParams();
+    const { bookId } = useLocalSearchParams<{ bookId: string }>();
     const { user, setUser } = useAuth(); // We need setUser to update local session points
 
     const addReview = useMutation(api.reviews.addReview);
