@@ -1,168 +1,249 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput, Button, Alert } from "react-native";
-import { useAuth } from "../../context/AuthContext";
 import { useMutation, useQuery } from "convex/react";
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
+import {
+    Alert,
+    Button,
+    FlatList,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
+} from "react-native";
+
+import { useAuth } from "../../context/AuthContext";
 import { api } from "../../convex/_generated/api";
 
 export default function HomeScreen() {
-    const { user, setUser } = useAuth();
-    const [visitCode, setVisitCode] = useState("");
-    const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
+  const { user, setUser } = useAuth();
 
-    const addVisit = useMutation(api.visits.addVisit);
-    const addPoints = useMutation(api.users.addPoints);
+  const [visitCode, setVisitCode] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Check if the user already visited today (reactive query)
-    const todayVisit = useQuery(
-        api.visits.getTodayVisit,
-        user ? { userId: user._id } : "skip"
-    );
+  const addVisit = useMutation(api.visits.addVisit);
+  const addPoints = useMutation(api.users.addPoints);
 
-    // Fetch current active visit code from the database
-    const visitCodeFromServer = useQuery(api.visitCodes.getVisitCode);
+  const books = useQuery(api.books.getBooks);
 
-    const handleVisit = async () => {
-        if (!user) return;
+  const todayVisit = useQuery(
+    api.visits.getTodayVisit,
+    user ? { userId: user._id } : "skip"
+  );
 
-        // Validate against the active code in the database
-        if (visitCodeFromServer === undefined) {
-            Alert.alert("Please wait", "Loading visit code, try again shortly.");
-            return;
-        }
+  const visitCodeFromServer = useQuery(api.visitCodes.getVisitCode);
 
-        if (!visitCodeFromServer) {
-            Alert.alert("No code set", "The admin has not set a visit code yet.");
-            return;
-        }
+  const handleVisit = async () => {
+    if (!user) return;
 
-        if (
-            visitCode.trim().toUpperCase() !==
-            visitCodeFromServer.code.toUpperCase()
-        ) {
-            Alert.alert("Invalid code", "The code you entered is incorrect.");
-            return;
-        }
+    if (visitCodeFromServer === undefined) {
+      Alert.alert("Please wait", "Loading visit code...");
+      return;
+    }
 
-        try {
-            setIsSubmitting(true);
+    if (!visitCodeFromServer) {
+      Alert.alert("No code set", "Admin has not set a visit code.");
+      return;
+    }
 
-            // Check if user has already visited today
-            // Only block if todayVisit is explicitly not null (a visit record exists)
-            // Allow when null (no visit today) or undefined (still loading)
-            // Check if query still loading
-            if (todayVisit === undefined) {
-                Alert.alert("Please wait", "Checking visit status...");
-                return;
-            }
+    if (
+      visitCode.trim().toUpperCase() !==
+      visitCodeFromServer.code.toUpperCase()
+    ) {
+      Alert.alert("Invalid code", "The code you entered is incorrect.");
+      return;
+    }
 
-            // Block if already visited
-            if (todayVisit !== null) {
-                Alert.alert("Already Visited", "You already visited today. Come back tomorrow!");
-                return;
-            }
+    try {
+      setIsSubmitting(true);
 
-            // Call addVisit and addPoints as requested
-            await addVisit({ userId: user._id });
-            await addPoints({
-                userId: user._id,
-                amount: 5,
-                activity: "visit"
-            });
+      if (todayVisit !== null) {
+        Alert.alert(
+          "Already Visited",
+          "You already visited today. Come back tomorrow!"
+        );
+        return;
+      }
 
-            // Update the context state to reflect the 5 added points
-            setUser({ ...user, points: user.points + 5 });
-            Alert.alert("Success", "Visit logged! You earned 5 points.");
-            setVisitCode(""); // Clear the input field
-        } catch (error: any) {
-            Alert.alert("Error", error.message || "Failed to log visit.");
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
+      await addVisit({ userId: user._id });
 
+      await addPoints({
+        userId: user._id,
+        amount: 5,
+        activity: "visit",
+      });
+
+      setUser({
+        ...user,
+        points: user.points + 5,
+      });
+
+      Alert.alert("Success", "Visit logged! You earned 5 points.");
+      setVisitCode("");
+    } catch (error: any) {
+      Alert.alert("Error", error.message || "Failed to log visit.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const renderBook = ({ item }: { item: any }) => (
+    <TouchableOpacity
+      style={styles.bookItem}
+      onPress={() =>
+        router.push({
+          pathname: "/books/detail",
+          params: { bookId: item._id },
+        })
+      }
+    >
+      <Text style={styles.bookTitle}>{item.title}</Text>
+      <Text style={styles.bookDetails}>Author: {item.author}</Text>
+      <Text style={styles.bookDetails}>Faculty: {item.faculty}</Text>
+    </TouchableOpacity>
+  );
+
+  if (books === undefined) {
     return (
-        <View style={styles.container}>
-            <Text style={styles.welcome}>
-                Welcome, {user?.name || "Guest"}!
-            </Text>
-            <Text style={styles.points}>
-                Your Points: {user?.points || 0}
-            </Text>
-
-            <View style={styles.visitContainer}>
-                <Text style={styles.visitTitle}>Visit Library</Text>
-                <Text style={styles.visitLabel}>Enter the library code to mark your visit and earn points:</Text>
-
-                <TextInput
-                    style={styles.input}
-                    placeholder="Enter code"
-                    value={visitCode}
-                    onChangeText={setVisitCode}
-                    autoCapitalize="characters"
-                />
-
-                <Button
-                    title={isSubmitting ? "Submitting..." : "Visit Library"}
-                    onPress={handleVisit}
-                    disabled={isSubmitting || visitCode.trim() === ""}
-                />
-            </View>
-        </View>
+      <View style={styles.centerContainer}>
+        <Text>Loading...</Text>
+      </View>
     );
+  }
+
+  return (
+    <FlatList
+      data={books.slice(0, 5)}
+      keyExtractor={(item) => item._id}
+      renderItem={renderBook}
+      ListHeaderComponent={
+        <View>
+          {/* WELCOME */}
+          <Text style={styles.welcome}>
+            Welcome, {user?.name || "Guest"}!
+          </Text>
+
+          <Text style={styles.points}>
+            Your Points: {user?.points || 0}
+          </Text>
+
+          {/* VISIT LIBRARY */}
+          <View style={styles.visitContainer}>
+            <Text style={styles.visitTitle}>Visit Library</Text>
+
+            <Text style={styles.visitLabel}>
+              Enter the library code to mark your visit and earn points
+            </Text>
+
+            <TextInput
+              style={styles.input}
+              placeholder="Enter code"
+              value={visitCode}
+              onChangeText={setVisitCode}
+              autoCapitalize="characters"
+            />
+
+            <Button
+              title={isSubmitting ? "Submitting..." : "Visit Library"}
+              onPress={handleVisit}
+              disabled={isSubmitting || visitCode.trim() === ""}
+            />
+          </View>
+
+          {/* RECOMMENDED BOOKS */}
+          <Text style={styles.sectionTitle}>Recommended Books</Text>
+        </View>
+      }
+      contentContainerStyle={styles.container}
+    />
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        padding: 20,
-        backgroundColor: "#fff",
-    },
-    welcome: {
-        fontSize: 24,
-        fontWeight: "bold",
-        marginBottom: 10,
-    },
-    points: {
-        fontSize: 18,
-        color: "#666",
-        marginBottom: 30, // Space between points and the new visit container
-    },
-    visitContainer: {
-        width: "100%",
-        backgroundColor: "#f9f9f9",
-        padding: 20,
-        borderRadius: 12,
-        borderWidth: 1,
-        borderColor: "#e0e0e0",
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.1,
-        shadowRadius: 2,
-        elevation: 2,
-    },
-    visitTitle: {
-        fontSize: 18,
-        fontWeight: "bold",
-        marginBottom: 8,
-        color: "#333",
-        textAlign: "center",
-    },
-    visitLabel: {
-        fontSize: 14,
-        color: "#666",
-        marginBottom: 16,
-        textAlign: "center",
-    },
-    input: {
-        borderWidth: 1,
-        borderColor: "#ccc",
-        borderRadius: 8,
-        padding: 12,
-        marginBottom: 20,
-        fontSize: 16,
-        backgroundColor: "#fff",
-        textAlign: "center",
-    },
+  container: {
+    padding: 20,
+    backgroundColor: "#fff",
+  },
+
+  centerContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  welcome: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+
+  points: {
+    fontSize: 18,
+    color: "#666",
+    marginBottom: 25,
+  },
+
+  visitContainer: {
+    backgroundColor: "#f9f9f9",
+    padding: 20,
+    borderRadius: 12,
+    marginBottom: 30,
+  },
+
+  visitTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 8,
+    textAlign: "center",
+  },
+
+  visitLabel: {
+    fontSize: 14,
+    color: "#666",
+    marginBottom: 16,
+    textAlign: "center",
+  },
+
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 20,
+    textAlign: "center",
+  },
+
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 15,
+  },
+
+  bookItem: {
+    backgroundColor: "#fff",
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: "#e0e0e0",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+
+  bookTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 4,
+    color: "#333",
+  },
+
+  bookDetails: {
+    fontSize: 14,
+    color: "#666",
+    marginTop: 2,
+  },
 });

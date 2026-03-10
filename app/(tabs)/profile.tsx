@@ -1,7 +1,7 @@
-import React from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
-import { useAuth } from "../../context/AuthContext";
 import { useRouter } from "expo-router";
+import React from "react";
+import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useAuth } from "../../context/AuthContext";
 
 export default function ProfileScreen() {
     const { user, setUser } = useAuth();
@@ -55,6 +55,23 @@ export default function ProfileScreen() {
                 </View>
             </View>
 
+            {/* ===== MENU FITUR PROFILE ===== */}
+
+            <TouchableOpacity
+                style={styles.menuButton}
+                onPress={() => router.push("/profile/points")}
+            >
+                <Text style={styles.menuText}>Points History</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                style={styles.menuButton}
+                onPress={() => router.push("/profile/visits")}
+            >
+                <Text style={styles.menuText}>Visit History</Text>
+            </TouchableOpacity>
+
+
             <View style={styles.buttonContainer}>
                 <Button title="Logout" color="#d9534f" onPress={handleLogout} />
             </View>
@@ -90,7 +107,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         shadowRadius: 2,
         elevation: 2,
-        marginBottom: 30,
+        marginBottom: 20,
     },
     detailRow: {
         flexDirection: "row",
@@ -117,12 +134,30 @@ const styles = StyleSheet.create({
         color: "#0066cc",
         fontWeight: "bold",
     },
+
+    /* MENU STYLE */
+
+    menuButton: {
+        backgroundColor: "#f5f5f5",
+        padding: 15,
+        borderRadius: 8,
+        marginBottom: 10,
+        borderWidth: 1,
+        borderColor: "#e0e0e0",
+    },
+
+    menuText: {
+        fontSize: 16,
+        fontWeight: "500",
+    },
+
     buttonContainer: {
         marginTop: "auto",
         marginBottom: 20,
     },
+
     loadingText: {
         marginTop: 10,
         color: "#666",
-    }
+    },
 });

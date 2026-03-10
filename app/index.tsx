@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { useAuth } from "../context/AuthContext";
-import { View, ActivityIndicator, StyleSheet } from "react-native";
 
 export default function IndexScreen() {
     const router = useRouter();
