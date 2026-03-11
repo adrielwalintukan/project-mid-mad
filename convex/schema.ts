@@ -48,6 +48,15 @@ export default defineSchema({
         createdAt: v.number(),
     }),
 
+    eventParticipants: defineTable({
+        userId: v.id("users"),
+        eventId: v.id("events"),
+        joinedAt: v.number(),
+    })
+        .index("by_userId", ["userId"])
+        .index("by_eventId", ["eventId"])
+        .index("by_userId_eventId", ["userId", "eventId"]),
+
     notifications: defineTable({
         userId: v.id("users"),
         message: v.string(),

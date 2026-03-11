@@ -24,7 +24,7 @@ export default function ProfileScreen() {
     return (
         <View style={styles.container}>
 
-                
+
             <View style={styles.profileCard}>
                 <View style={styles.detailRow}>
                     <Text style={styles.label}>Name</Text>
@@ -50,9 +50,14 @@ export default function ProfileScreen() {
                     </View>
                 )}
 
-                <View style={[styles.detailRow, styles.lastRow]}>
+                <View style={styles.detailRow}>
                     <Text style={styles.label}>Points Earned</Text>
                     <Text style={styles.pointValue}>{user.points} pts</Text>
+                </View>
+
+                <View style={[styles.detailRow, styles.lastRow]}>
+                    <Text style={styles.label}>Bonus Grade</Text>
+                    <Text style={styles.bonusValue}>+{Math.floor(user.points / 1000)}</Text>
                 </View>
             </View>
 
@@ -138,6 +143,11 @@ const styles = StyleSheet.create({
     pointValue: {
         fontSize: 16,
         color: "#0066cc",
+        fontWeight: "bold",
+    },
+    bonusValue: {
+        fontSize: 16,
+        color: "#2e7d32",
         fontWeight: "bold",
     },
 

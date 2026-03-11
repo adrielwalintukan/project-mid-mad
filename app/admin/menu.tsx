@@ -49,6 +49,20 @@ export default function AdminMenuScreen() {
                 <Text style={styles.menuButtonText}>View Points</Text>
             </TouchableOpacity>
 
+            <TouchableOpacity
+                style={styles.menuButton}
+                onPress={() => router.push("/admin/addEvent")}
+            >
+                <Text style={styles.menuButtonText}>Add Event</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                style={styles.menuButton}
+                onPress={() => router.push("/admin/events")}
+            >
+                <Text style={styles.menuButtonText}>View Events</Text>
+            </TouchableOpacity>
+
             <View style={{ flex: 1 }} />
 
             <TouchableOpacity

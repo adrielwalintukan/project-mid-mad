@@ -127,6 +127,14 @@ export default function HomeScreen() {
             Your Points: {user?.points || 0}
           </Text>
 
+          {/* REWARD INFO */}
+          <View style={styles.rewardBox}>
+            <Text style={styles.rewardTitle}>🏆 Reward System</Text>
+            <Text style={styles.rewardText}>
+              Collect 1000 points to get +1 final grade bonus
+            </Text>
+          </View>
+
           {/* VISIT LIBRARY */}
           <View style={styles.visitContainer}>
             <Text style={styles.visitTitle}>Visit Library</Text>
@@ -155,7 +163,7 @@ export default function HomeScreen() {
           </View>
 
           {/* RECOMMENDED BOOKS */}
-          <Text style={styles.sectionTitle}>Recommended Books</Text> 
+          <Text style={styles.sectionTitle}>Recommended Books</Text>
         </View>
       }
       contentContainerStyle={styles.container}
@@ -237,6 +245,34 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#E5E7EB",
     paddingBottom: 10,
+  },
+
+  rewardBox: {
+    backgroundColor: "#FFFFFF",
+    padding: 16,
+    borderRadius: 16,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: "#E3E8F0",
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowRadius: 6,
+    elevation: 2,
+    alignItems: "center",
+  },
+
+  rewardTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#1F2937",
+    marginBottom: 6,
+  },
+
+  rewardText: {
+    fontSize: 14,
+    color: "#2e7d32",
+    textAlign: "center",
+    fontWeight: "500",
   },
 
   bookItem: {
