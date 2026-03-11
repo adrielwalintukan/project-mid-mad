@@ -18,13 +18,24 @@ export default function LoginScreen() {
     const handleLogin = async () => {
         try {
             setErrorMsg("");
+
+            // Frontend validation: email domain by role
+            if (role === "student" && !email.endsWith("@student.unklab.ac.id")) {
+                setErrorMsg("Please use your student email (@student.unklab.ac.id)");
+                return;
+            }
+            if (role === "admin" && !email.endsWith("@admin.unklab.ac.id")) {
+                setErrorMsg("Please use your admin email (@admin.unklab.ac.id)");
+                return;
+            }
+
             const user = await loginUser({ email, password, role });
             if (user) {
                 // Set the session user
                 setUser(user);
                 // Route based on role
                 if (user.role === "admin") {
-                    router.replace("/admin/setCode");
+                    router.replace("/admin/menu");
                 } else {
                     router.replace("/(tabs)/home");
                 }
@@ -82,10 +93,10 @@ export default function LoginScreen() {
             <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
                 <Text style={styles.loginButtonText}>Login</Text>
             </TouchableOpacity>
-            
+
             <View style={{ height: 15 }} />
 
-            <TouchableOpacity onPress={() => router.push("/auth/register")}> 
+            <TouchableOpacity onPress={() => router.push("/auth/register")}>
                 <Text style={styles.linkText}>Dont have an account? Register</Text>
             </TouchableOpacity>
         </View>
@@ -179,20 +190,20 @@ const styles = StyleSheet.create({
         marginTop: 14,
     },
     loginButton: {
-    backgroundColor: "#2C6EBA",
-    paddingVertical: 16,
-    borderRadius: 16,
-    alignItems: "center",
-    shadowColor: "#2C6EBA",
-    shadowOpacity: 0.35,
-    shadowRadius: 6,
-    elevation: 4,
-    marginTop: 6,
+        backgroundColor: "#2C6EBA",
+        paddingVertical: 16,
+        borderRadius: 16,
+        alignItems: "center",
+        shadowColor: "#2C6EBA",
+        shadowOpacity: 0.35,
+        shadowRadius: 6,
+        elevation: 4,
+        marginTop: 6,
     },
     loginButtonText: {
-    color: "#FFFFFF",
-    fontSize: 17,
-    fontWeight: "700",
-    letterSpacing: 0.5,
+        color: "#FFFFFF",
+        fontSize: 17,
+        fontWeight: "700",
+        letterSpacing: 0.5,
     },
 });

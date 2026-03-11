@@ -21,7 +21,11 @@ export default function IndexScreen() {
         if (!isReady) return;
 
         if (user) {
-            router.replace("/(tabs)");
+            if (user.role === "admin") {
+                router.replace("/admin/menu");
+            } else {
+                router.replace("/(tabs)/home");
+            }
         } else {
             router.replace("/auth/login");
         }

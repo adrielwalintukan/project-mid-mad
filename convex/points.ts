@@ -1,5 +1,5 @@
-import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { mutation, query } from "./_generated/server";
 
 export const getPointsByUser = query({
     args: {
@@ -59,5 +59,12 @@ export const getTotalPoints = query({
             throw new Error("User not found");
         }
         return user.points;
+    },
+});
+
+export const getAllPoints = query({
+    handler: async (ctx) => {
+        const points = await ctx.db.query("points").collect();
+        return points;
     },
 });

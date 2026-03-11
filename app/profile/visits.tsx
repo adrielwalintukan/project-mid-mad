@@ -1,11 +1,13 @@
 import { useQuery } from "convex/react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { useRouter } from "expo-router";
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useAuth } from "../../context/AuthContext";
 import { api } from "../../convex/_generated/api";
 
 export default function VisitHistoryScreen() {
 
   const { user } = useAuth();
+  const router = useRouter();
 
   const visits = useQuery(
     api.visits.getVisitsByUser,
@@ -22,7 +24,12 @@ export default function VisitHistoryScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Visit History</Text>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+          <Text style={styles.backArrow}>◀</Text>
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Visit History</Text>
+      </View>
 
       {visits.length === 0 ? (
         <View style={styles.emptyContainer}>
@@ -48,54 +55,68 @@ export default function VisitHistoryScreen() {
 
 const styles = StyleSheet.create({
 
-container: {
-  flex: 1,
-  backgroundColor: "#EEF3FA",
-  padding: 24,
-},
+  container: {
+    flex: 1,
+    padding: 24,
+    paddingTop: 50,
+    backgroundColor: "#EEF3FA",
+  },
 
-header: {
-    fontSize: 24,
+  headerTitle: {
+    fontSize: 22,
     fontWeight: "700",
+    color: "#1F2937",
+  },
+
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 20,
-  borderBottomWidth: 1,
-  borderBottomColor: "#E5E7EB",
-  paddingBottom: 10,
-},
+  },
 
-card: {
-  backgroundColor: "#FFFFFF",
-  padding: 16,
-  borderRadius: 16,
-  marginBottom: 12,
-  borderWidth: 1,
-  borderColor: "#E3E8F0",
-  shadowColor: "#000",
-  shadowOpacity: 0.05,
-  shadowRadius: 6,
-  elevation: 2,
-},
+  backButton: {
+    padding: 4,
+    marginRight: 12,
+  },
 
-date: {
-  fontSize: 16,
-  color: "#333",
-},
+  backArrow: {
+    fontSize: 22,
+    color: "#0066cc",
+  },
 
-emptyContainer: {
-  flex: 1,
-  justifyContent: "center",
-  alignItems: "center",
-  marginTop: 40,
-},
+  card: {
+    backgroundColor: "#FFFFFF",
+    padding: 16,
+    borderRadius: 16,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: "#E3E8F0",
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowRadius: 6,
+    elevation: 2,
+  },
 
-empty: {
-  textAlign: "center",
-  color: "#888",
-},
+  date: {
+    fontSize: 16,
+    color: "#333",
+  },
 
-center: {
-  flex: 1,
-  justifyContent: "center",
-  alignItems: "center",
-},
+  emptyContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 40,
+  },
+
+  empty: {
+    textAlign: "center",
+    color: "#888",
+  },
+
+  center: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });

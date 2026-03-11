@@ -1,10 +1,12 @@
 import { useQuery } from "convex/react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { useRouter } from "expo-router";
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useAuth } from "../../context/AuthContext";
 import { api } from "../../convex/_generated/api";
 
 export default function PointsScreen() {
   const { user } = useAuth();
+  const router = useRouter();
 
   const points = useQuery(
     api.points.getPointsByUser,
@@ -21,7 +23,12 @@ export default function PointsScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Points History</Text>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+          <Text style={styles.backArrow}>◀</Text>
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Points History</Text>
+      </View>
 
       {points.length === 0 ? (
         <View style={styles.emptyContainer}>
@@ -52,17 +59,30 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
+    paddingTop: 50,
     backgroundColor: "#EEF3FA",
   },
 
-  header: {
-    fontSize: 24,
+  headerTitle: {
+    fontSize: 22,
     fontWeight: "700",
-    marginBottom: 20,
     color: "#1F2937",
-    borderBottomWidth: 1,
-    borderBottomColor: "#E5E7EB",
-    paddingBottom: 10,
+  },
+
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+
+  backButton: {
+    padding: 4,
+    marginRight: 12,
+  },
+
+  backArrow: {
+    fontSize: 22,
+    color: "#0066cc",
   },
 
   card: {

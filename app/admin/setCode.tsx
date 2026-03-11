@@ -1,4 +1,5 @@
 import { useMutation } from "convex/react";
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useAuth } from "../../context/AuthContext";
@@ -6,6 +7,7 @@ import { api } from "../../convex/_generated/api";
 
 export default function SetCodeScreen() {
     const { user } = useAuth();
+    const router = useRouter();
     const [code, setCode] = useState("");
     const [isSaving, setIsSaving] = useState(false);
 
@@ -40,7 +42,12 @@ export default function SetCodeScreen() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Set Visit Code</Text>
+            <View style={styles.header}>
+                <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+                    <Text style={styles.backArrow}>◀</Text>
+                </TouchableOpacity>
+                <Text style={styles.headerTitle}>Set Visit Code</Text>
+            </View>
             <Text style={styles.subtitle}>Enter the code users will use to log their library visit.</Text>
 
             <TextInput
@@ -68,13 +75,25 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 24,
+        paddingTop: 60,
         backgroundColor: "#EEF3FA",
     },
-    title: {
-        fontSize: 26,
+    header: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginBottom: 20,
+    },
+    backButton: {
+        padding: 4,
+        marginRight: 12,
+    },
+    backArrow: {
+        fontSize: 22,
+        color: "#0066cc",
+    },
+    headerTitle: {
+        fontSize: 22,
         fontWeight: "700",
-        marginBottom: 10,
-        textAlign: "center",
         color: "#1F2937",
     },
     subtitle: {

@@ -15,12 +15,35 @@ export default function RegisterScreen() {
     const [password, setPassword] = useState("");
     const [role, setRole] = useState("student");
     const [errorMsg, setErrorMsg] = useState("");
+    const [submitted, setSubmitted] = useState(false);
 
     const isAdmin = role === "admin";
 
     const handleRegister = async () => {
+        setSubmitted(true);
         try {
             setErrorMsg("");
+
+            // Check required fields
+            const missingFields = !name.trim() || !email.trim() || !password.trim()
+                || (!isAdmin && (!nim.trim() || !faculty.trim()));
+            if (missingFields) {
+                setErrorMsg("Please fill in all required fields.");
+                return;
+            }
+
+            // Frontend validation: student email domain
+            if (role === "student" && !email.endsWith("@student.unklab.ac.id")) {
+                setErrorMsg("Please use your student email (@student.unklab.ac.id)");
+                return;
+            }
+
+            // Frontend validation: admin email domain
+            if (role === "admin" && !email.endsWith("@admin.unklab.ac.id")) {
+                setErrorMsg("Please use your admin email (@admin.unklab.ac.id)");
+                return;
+            }
+
             await registerUser({
                 name,
                 nim,
@@ -43,7 +66,7 @@ export default function RegisterScreen() {
             {errorMsg ? <Text style={styles.error}>{errorMsg}</Text> : null}
 
             <TextInput
-                style={styles.input}
+                style={[styles.input, submitted && !name.trim() && styles.inputError]}
                 placeholder="Full Name"
                 value={name}
                 onChangeText={setName}
@@ -51,7 +74,7 @@ export default function RegisterScreen() {
 
             {!isAdmin && (
                 <TextInput
-                    style={styles.input}
+                    style={[styles.input, submitted && !nim.trim() && styles.inputError]}
                     placeholder="NIM"
                     value={nim}
                     onChangeText={setNim}
@@ -61,7 +84,7 @@ export default function RegisterScreen() {
 
             {!isAdmin && (
                 <TextInput
-                    style={styles.input}
+                    style={[styles.input, submitted && !faculty.trim() && styles.inputError]}
                     placeholder="Faculty"
                     value={faculty}
                     onChangeText={setFaculty}
@@ -69,7 +92,7 @@ export default function RegisterScreen() {
             )}
 
             <TextInput
-                style={styles.input}
+                style={[styles.input, submitted && !email.trim() && styles.inputError]}
                 placeholder="Email"
                 value={email}
                 onChangeText={setEmail}
@@ -78,7 +101,7 @@ export default function RegisterScreen() {
             />
 
             <TextInput
-                style={styles.input}
+                style={[styles.input, submitted && !password.trim() && styles.inputError]}
                 placeholder="Password"
                 value={password}
                 onChangeText={setPassword}
@@ -112,7 +135,7 @@ export default function RegisterScreen() {
 
             <View style={styles.spacer} />
 
-            <TouchableOpacity onPress={() => router.replace("/auth/login")}> 
+            <TouchableOpacity onPress={() => router.replace("/auth/login")}>
                 <Text style={styles.linkText}>Already have an account? Login</Text>
             </TouchableOpacity>
         </ScrollView>
@@ -148,6 +171,11 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.05,
         shadowRadius: 5,
         elevation: 2,
+    },
+
+    inputError: {
+        borderColor: "#EF4444",
+        borderWidth: 2,
     },
 
     error: {

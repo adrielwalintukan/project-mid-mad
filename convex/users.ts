@@ -1,5 +1,5 @@
-import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { mutation, query } from "./_generated/server";
 
 export const registerUser = mutation({
     args: {
@@ -19,6 +19,15 @@ export const registerUser = mutation({
 
         if (existingUser) {
             throw new Error("Email already registered");
+        }
+
+        // Validate student email domain
+        const role = args.role ?? "student";
+        if (role === "student" && !args.email.endsWith("@student.unklab.ac.id")) {
+            throw new Error("Student email must end with @student.unklab.ac.id");
+        }
+        if (role === "admin" && !args.email.endsWith("@admin.unklab.ac.id")) {
+            throw new Error("Admin email must end with @admin.unklab.ac.id");
         }
 
         // TODO: Hash the password before saving in production
@@ -120,5 +129,12 @@ export const getLeaderboard = query({
 
         students.sort((a, b) => b.points - a.points);
         return students.slice(0, 10);
+    },
+});
+
+export const getAllUsers = query({
+    handler: async (ctx) => {
+        const users = await ctx.db.query("users").collect();
+        return users;
     },
 });

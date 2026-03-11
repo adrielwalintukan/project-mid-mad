@@ -1,5 +1,5 @@
-import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { mutation, query } from "./_generated/server";
 
 export const addVisit = mutation({
     args: {
@@ -62,5 +62,12 @@ export const getVisitCount = query({
             .withIndex("by_userId", (q) => q.eq("userId", args.userId))
             .collect();
         return visits.length;
+    },
+});
+
+export const getAllVisits = query({
+    handler: async (ctx) => {
+        const visits = await ctx.db.query("visits").collect();
+        return visits;
     },
 });
