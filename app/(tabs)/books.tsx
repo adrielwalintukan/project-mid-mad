@@ -1,6 +1,6 @@
 import { useQuery } from "convex/react";
 import { useRouter } from "expo-router";
-import { ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { api } from "../../convex/_generated/api";
 
 
@@ -33,10 +33,21 @@ export default function BooksScreen() {
             }}
         >
             <View style={styles.bookRow}>
-                <View style={styles.bookMeta}>
-                    <Text style={styles.bookTitle}>{item.title}</Text>
-                    <Text style={styles.bookDetails}>Author: {item.author}</Text>
-                    <Text style={styles.bookDetails}>Faculty: {item.faculty}</Text>
+                {item.coverUrl ? (
+                    <Image source={{ uri: item.coverUrl }} style={styles.coverImage} />
+                ) : (
+                    <View style={styles.placeholderCover}>
+                        <Text style={styles.placeholderText}>No Cover</Text>
+                    </View>
+                )}
+
+                <View style={styles.bookInfo}>
+                    <Text style={styles.bookTitle} numberOfLines={2}>{item.title}</Text>
+                    <Text style={styles.bookAuthor}>By {item.author}</Text>
+
+                    <View style={styles.facultyBadge}>
+                        <Text style={styles.facultyText}>{item.faculty}</Text>
+                    </View>
                 </View>
             </View>
         </TouchableOpacity>
@@ -109,23 +120,55 @@ const styles = StyleSheet.create({
     },
     bookRow: {
         flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
+        alignItems: "flex-start",
     },
-    bookMeta: {
+    coverImage: {
+        width: 80,
+        height: 120,
+        borderRadius: 8,
+        backgroundColor: "#E5E7EB",
+    },
+    placeholderCover: {
+        width: 80,
+        height: 120,
+        borderRadius: 8,
+        backgroundColor: "#E5E7EB",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    placeholderText: {
+        fontSize: 10,
+        color: "#9CA3AF",
+        textAlign: "center",
+    },
+    bookInfo: {
         flex: 1,
-        marginRight: 12,
+        marginLeft: 16,
+        justifyContent: "center",
     },
     bookTitle: {
         fontSize: 18,
         fontWeight: "bold",
-        marginBottom: 4,
-        color: "#333",
+        marginBottom: 6,
+        color: "#1F2937",
     },
-    bookDetails: {
+    bookAuthor: {
         fontSize: 14,
-        color: "#666",
-        marginTop: 2,
+        color: "#6B7280",
+        marginBottom: 10,
+        fontWeight: "500",
+    },
+    facultyBadge: {
+        alignSelf: "flex-start",
+        backgroundColor: "#E0F2FE",
+        paddingHorizontal: 10,
+        paddingVertical: 4,
+        borderRadius: 12,
+    },
+    facultyText: {
+        fontSize: 12,
+        color: "#0369A1",
+        fontWeight: "600",
     },
     loadingText: {
         marginTop: 10,

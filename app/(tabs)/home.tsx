@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import {
   Alert,
   FlatList,
+  Image,
   StyleSheet,
   Text,
   TextInput,
@@ -89,7 +90,7 @@ export default function HomeScreen() {
 
   const renderBook = ({ item }: { item: any }) => (
     <TouchableOpacity
-      style={styles.bookItem}
+      style={styles.bookCard}
       onPress={() =>
         router.push({
           pathname: "/books/detail",
@@ -97,9 +98,16 @@ export default function HomeScreen() {
         })
       }
     >
-      <Text style={styles.bookTitle}>{item.title}</Text>
-      <Text style={styles.bookDetails}>Author: {item.author}</Text>
-      <Text style={styles.bookDetails}>Faculty: {item.faculty}</Text>
+      {item.coverUrl ? (
+        <Image source={{ uri: item.coverUrl }} style={styles.bookCover} />
+      ) : (
+        <View style={styles.placeholderCover}>
+          <Text style={styles.placeholderText}>No Cover</Text>
+        </View>
+      )}
+      <Text style={styles.bookItemTitle} numberOfLines={2}>
+        {item.title}
+      </Text>
     </TouchableOpacity>
   );
 
@@ -113,9 +121,8 @@ export default function HomeScreen() {
 
   return (
     <FlatList
-      data={books.slice(0, 5)}
-      keyExtractor={(item) => item._id}
-      renderItem={renderBook}
+      data={[]}
+      renderItem={() => null}
       ListHeaderComponent={
         <View>
           {/* WELCOME */}
@@ -164,6 +171,14 @@ export default function HomeScreen() {
 
           {/* RECOMMENDED BOOKS */}
           <Text style={styles.sectionTitle}>Recommended Books</Text>
+          <FlatList
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            data={books.slice(0, 5)}
+            keyExtractor={(item) => item._id}
+            renderItem={renderBook}
+            contentContainerStyle={styles.recommendedList}
+          />
         </View>
       }
       contentContainerStyle={styles.container}
@@ -275,30 +290,44 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
 
-  bookItem: {
-    backgroundColor: "#FFFFFF",
-    padding: 16,
-    borderRadius: 16,
-    marginBottom: 12,
-    borderWidth: 1,
-    borderColor: "#E3E8F0",
-    shadowColor: "#000",
-    shadowOpacity: 0.05,
-    shadowRadius: 6,
-    elevation: 2,
+  recommendedList: {
+    paddingVertical: 10,
+    paddingRight: 20,
   },
 
-  bookTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 4,
-    color: "#333",
+  bookCard: {
+    width: 120,
+    marginRight: 16,
   },
 
-  bookDetails: {
+  bookCover: {
+    width: 120,
+    height: 180,
+    borderRadius: 12,
+    backgroundColor: "#E5E7EB",
+    marginBottom: 8,
+  },
+
+  placeholderCover: {
+    width: 120,
+    height: 180,
+    borderRadius: 12,
+    backgroundColor: "#E5E7EB",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 8,
+  },
+
+  placeholderText: {
+    fontSize: 12,
+    color: "#9CA3AF",
+  },
+
+  bookItemTitle: {
     fontSize: 14,
-    color: "#666",
-    marginTop: 2,
+    fontWeight: "600",
+    color: "#1F2937",
+    textAlign: "center",
   },
 
   submitButton: {
