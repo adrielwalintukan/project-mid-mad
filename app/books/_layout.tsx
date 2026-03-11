@@ -1,5 +1,16 @@
+import { Ionicons } from "@expo/vector-icons";
+import { Stack, useRouter } from "expo-router";
 import React from "react";
-import { Stack } from "expo-router";
+import { TouchableOpacity } from "react-native";
+
+function BackButton() {
+    const router = useRouter();
+    return (
+        <TouchableOpacity onPress={() => router.replace("/(tabs)/books")}>
+            <Ionicons name="chevron-back" size={28} color="#007AFF" />
+        </TouchableOpacity>
+    );
+}
 
 export default function BooksLayout() {
     return (
@@ -8,7 +19,8 @@ export default function BooksLayout() {
                 name="detail"
                 options={{
                     title: "Book Status",
-                    headerShown: true
+                    headerShown: true,
+                    headerLeft: () => <BackButton />,
                 }}
             />
             <Stack.Screen

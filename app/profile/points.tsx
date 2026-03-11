@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "convex/react";
 import { useRouter } from "expo-router";
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -25,7 +26,7 @@ export default function PointsScreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <Text style={styles.backArrow}>◀</Text>
+          <Ionicons name="chevron-back" size={28} color="#007AFF" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Points History</Text>
       </View>
