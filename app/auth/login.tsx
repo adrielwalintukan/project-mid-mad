@@ -1,7 +1,7 @@
 import { useMutation } from "convex/react";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useAuth } from "../../context/AuthContext";
 import { api } from "../../convex/_generated/api";
 
@@ -48,6 +48,12 @@ export default function LoginScreen() {
 
     return (
         <View style={styles.container}>
+            <Text style={styles.appTitle}>UNKLAB LIBRARY</Text>
+            <Image
+                source={require("../../assets/images/logo/logo_unklab.png")}
+                style={styles.logo}
+                resizeMode="contain"
+            />
             <Text style={styles.title}>Login</Text>
 
             {errorMsg ? <Text style={styles.error}>{errorMsg}</Text> : null}
@@ -112,9 +118,9 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        fontSize: 30,
+        fontSize: 25,
         fontWeight: "800",
-        marginBottom: 30,
+        marginBottom: 20,
         textAlign: "center",
         color: "#2C6EBA",
         letterSpacing: 1,
@@ -132,6 +138,21 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.05,
         shadowRadius: 5,
         elevation: 2,
+    },
+
+    logo: {
+        width: 120,
+        height: 120,
+        alignSelf: "center",
+        marginBottom: 25,
+    },
+
+    appTitle: {
+        fontSize: 24,
+        fontWeight: "bold",
+        color: "#1F2937",
+        textAlign: "center",
+        marginBottom: 8,
     },
 
     error: {

@@ -33,7 +33,7 @@ export default function ProfileScreen() {
 
                 <View style={styles.detailRow}>
                     <Text style={styles.label}>Email</Text>
-                    <Text style={styles.value}>{user.email}</Text>
+                    <Text style={[styles.value, { fontSize: 13 }]}>{user.email}</Text>
                 </View>
 
                 {user.nim && (
